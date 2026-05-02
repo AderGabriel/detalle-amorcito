@@ -8,7 +8,7 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans-serif}
+body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial}
 
 .inicio{
   position:fixed;inset:0;background:#000;z-index:50;
@@ -32,15 +32,17 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
 .universo{
   display:none;position:fixed;inset:0;overflow:hidden;
   background:
-    radial-gradient(circle at center, rgba(255,80,0,.25), transparent 22%),
+    radial-gradient(circle at center, rgba(255,80,0,.25), transparent 20%),
     radial-gradient(circle,#2b0400,#000);
 }
 
+/* estrellas */
 .star{
   position:absolute;width:2px;height:2px;background:white;border-radius:50%;
   opacity:.7;
 }
 
+/* planeta */
 .saturno{
   position:absolute;left:50%;top:50%;
   width:clamp(120px,30vw,210px);
@@ -52,6 +54,7 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
   z-index:50;
 }
 
+/* anillos */
 .anillo{
   position:absolute;left:50%;top:50%;
   width:clamp(220px,55vw,380px);
@@ -63,12 +66,14 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
 }
 .anillo.back{z-index:45;opacity:.4}
 
+/* frases */
 .frase{
   position:absolute;left:50%;top:50%;
   white-space:nowrap;
   font-weight:bold;
   color:white;
   text-shadow:0 0 6px #ff4b00,0 0 15px #ff4b00;
+  will-change:transform;
 }
 
 .info{
@@ -99,16 +104,9 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
 
 <script>
 const frases = [
-  "Te amo ❤️",
-  "Mi reina 👑",
-  "Eres única 💖",
-  "Mi vida ✨",
-  "Mi universo 🌌",
-  "Mi razón 🫶",
-  "Mi luz 🌟",
-  "Por siempre 💫",
-  "Mi felicidad 😊",
-  "Mi paz 🦋"
+  "Te amo ❤️","Mi reina 👑","Eres única 💖","Mi vida ✨",
+  "Mi universo 🌌","Mi razón 🫶","Mi luz 🌟","Por siempre 💫",
+  "Mi felicidad 😊","Mi paz 🦋"
 ];
 
 let objetos=[];
@@ -129,7 +127,7 @@ function entrar(){
 
 function estrellas(){
   const u=document.getElementById("universo");
-  for(let i=0;i<140;i++){
+  for(let i=0;i<180;i++){
     const s=document.createElement("div");
     s.className="star";
     s.style.left=Math.random()*100+"vw";
@@ -138,13 +136,14 @@ function estrellas(){
   }
 }
 
+/* 🔥 DISTRIBUCIÓN MEJORADA */
 function crearFrases(){
   const u=document.getElementById("universo");
   const esCelular = window.innerWidth < 700;
 
-  const cantidad = esCelular ? 45 : 90;
-  const radioMin = esCelular ? 150 : 250;
-  const radioMax = esCelular ? 450 : 900;
+  const cantidad = esCelular ? 70 : 140; // MUCHAS más
+  const radioMin = esCelular ? 100 : 200;
+  const radioMax = esCelular ? 600 : 1200;
 
   for(let i=0;i<cantidad;i++){
     const f=document.createElement("div");
@@ -156,10 +155,10 @@ function crearFrases(){
     objetos.push({
       el:f,
       r:radio,
-      speed:0.001 + Math.random()*0.002,
+      speed:0.0008 + Math.random()*0.002,
       a:Math.random()*Math.PI*2,
-      size:esCelular ? 12+Math.random()*10 : 16+Math.random()*20,
-      altura:-220 + Math.random()*440
+      size:esCelular ? 12+Math.random()*12 : 16+Math.random()*24,
+      altura:-300 + Math.random()*600 // MÁS rango vertical
     });
 
     u.appendChild(f);
@@ -167,7 +166,7 @@ function crearFrases(){
 }
 
 function animar(){
-  angle+=0.004;
+  angle+=0.003;
 
   objetos.forEach(o=>{
     o.a+=o.speed;
@@ -175,12 +174,12 @@ function animar(){
     const x=Math.cos(o.a+angle)*o.r;
     const z=Math.sin(o.a+angle)*o.r;
 
-    const scale=0.45+(z+500)/900;
-    const y=o.altura + z*0.2;
+    const scale=0.4+(z+600)/1200;
+    const y=o.altura + z*0.25;
 
     o.el.style.fontSize=o.size+"px";
-    o.el.style.opacity=0.35 + scale*0.6;
-    o.el.style.zIndex=Math.floor(scale*40);
+    o.el.style.opacity=0.25 + scale*0.7;
+    o.el.style.zIndex=Math.floor(scale*50);
 
     o.el.style.transform=
       `translate(-50%,-50%) translate(${x}px,${y}px) scale(${scale})`;
