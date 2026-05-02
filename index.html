@@ -3,87 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para ti ❤️</title>
+<title>Mi universo ❤️</title>
 
 <style>
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* INICIO */
+.inicio {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: black;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-}
-
-.card {
-  background: rgba(255,255,255,0.2);
-  padding: 30px;
-  border-radius: 25px;
   text-align: center;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-h1 {
-  color: white;
-  font-size: 30px;
-}
-
-p {
-  color: white;
-  font-size: 18px;
-}
-
-.heart {
-  font-size: 60px;
-  animation: latir 1s infinite;
-}
-
-@keyframes latir {
-  0%,100% {transform: scale(1);}
-  50% {transform: scale(1.3);}
+.inicio h1 {
+  color: #ff4b00;
+  letter-spacing: 15px;
 }
 
 button {
   margin-top: 20px;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 20px;
-  background: white;
-  color: #ff4b6e;
-  font-size: 16px;
+  padding: 15px 40px;
+  border: 1px solid #ff4b00;
+  background: transparent;
+  color: #ff4b00;
   cursor: pointer;
-  font-weight: bold;
 }
 
-#extra {
-  margin-top: 15px;
-  font-weight: bold;
+/* UNIVERSO */
+.universo {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle, #330000, #000);
+  display: none;
+  overflow: hidden;
+}
+
+/* textos flotantes */
+.texto {
+  position: absolute;
+  color: #fff;
+  font-size: 20px;
+  animation: flotar linear infinite;
+}
+
+@keyframes flotar {
+  from {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(-10vh);
+    opacity: 1;
+  }
+}
+
+/* planeta */
+.planeta {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: black;
+  border-radius: 50%;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.anillo {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 4px solid orange;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(70deg);
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-  <div class="heart">❤️</div>
-  <h1>Para ti 💕</h1>
+<!-- INICIO -->
+<div class="inicio" id="inicio">
+  <div>
+    <h1>1 DE MAYO</h1>
+    <p>Hoy comienza un nuevo mes, y mi mayor motivo para sonreír es haberte conocido.</p>
+    <button onclick="entrar()">ENTRAR AL UNIVERSO</button>
+  </div>
+</div>
 
-  <p>
-    Quería hacer algo diferente para ti…  
-    algo que naciera de mí ❤️
-  </p>
-
-  <button onclick="mostrar()">Presiona aquí</button>
-
-  <p id="extra"></p>
+<!-- UNIVERSO -->
+<div class="universo" id="universo">
+  <div class="planeta"></div>
+  <div class="anillo"></div>
 </div>
 
 <script>
-function mostrar(){
-  document.getElementById("extra").innerHTML =
-  "Eres lo más bonito que me ha pasado 💖";
+function entrar() {
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("universo").style.display = "block";
+
+  const frases = [
+    "Eres única ❤️",
+    "Mi universo 🌌",
+    "Te amo 💕",
+    "Mi razón 🫶",
+    "Mi vida 💖",
+    "Por siempre ✨",
+    "Mi reina 👑",
+    "Mi felicidad 😊"
+  ];
+
+  for (let i = 0; i < 40; i++) {
+    let texto = document.createElement("div");
+    texto.className = "texto";
+    texto.innerText = frases[Math.floor(Math.random() * frases.length)];
+
+    texto.style.left = Math.random() * 100 + "vw";
+    texto.style.animationDuration = (5 + Math.random() * 10) + "s";
+    texto.style.fontSize = (15 + Math.random() * 25) + "px";
+
+    document.getElementById("universo").appendChild(texto);
+  }
 }
 </script>
 
