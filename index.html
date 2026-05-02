@@ -11,7 +11,7 @@
 body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans-serif}
 
 .inicio{
-  position:fixed;inset:0;background:#000;z-index:50;
+  position:fixed;inset:0;background:#000;z-index:100;
   display:flex;align-items:center;justify-content:center;text-align:center;padding:20px
 }
 .inicio h1{
@@ -19,10 +19,7 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
   font-size:clamp(26px,6vw,42px);
   letter-spacing:clamp(6px,2vw,18px);
 }
-.inicio p{
-  font-size:clamp(16px,4vw,24px);
-  max-width:800px;
-}
+.inicio p{font-size:clamp(16px,4vw,24px);max-width:800px}
 .inicio button{
   margin-top:30px;padding:15px 30px;
   border:1px solid #ff4b00;background:transparent;
@@ -41,35 +38,112 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
   opacity:.7;
 }
 
+/* CONTENEDOR DEL PLANETA */
+.planeta-wrap{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:clamp(280px,70vw,500px);
+  height:clamp(220px,45vw,380px);
+  transform:translate(-50%,-50%);
+  z-index:60;
+}
+
+/* ANILLO COMPLETO ATRÁS */
+.anillo-atras{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:100%;
+  height:38%;
+  border-radius:50%;
+  transform:translate(-50%,-50%) rotate(-10deg);
+  border:10px solid rgba(255,130,0,.55);
+  box-shadow:0 0 25px rgba(255,90,0,.6);
+  z-index:1;
+}
+
+/* PLANETA */
 .saturno{
-  position:absolute;left:50%;top:50%;
-  width:clamp(120px,30vw,210px);
-  height:clamp(120px,30vw,210px);
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:clamp(140px,32vw,240px);
+  height:clamp(140px,32vw,240px);
   border-radius:50%;
   transform:translate(-50%,-50%);
-  background:radial-gradient(circle at 30% 30%,#ffcc80,#8b3e00 60%,#000);
-  box-shadow:0 0 35px #ff4b00;
-  z-index:50;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,190,90,.22) 0px,
+      rgba(255,190,90,.22) 5px,
+      rgba(120,55,15,.25) 8px,
+      rgba(120,55,15,.25) 13px
+    ),
+    radial-gradient(circle at 68% 30%, #ffd27a 0%, #ffb347 18%, #c96b1d 42%, #5a2d0c 68%, #070201 92%);
+  box-shadow:
+    0 0 65px rgba(255,110,0,.85),
+    inset -35px -30px 55px rgba(0,0,0,.85),
+    inset 20px 15px 35px rgba(255,220,150,.35);
+  z-index:3;
+  overflow:hidden;
 }
 
-.anillo{
-  position:absolute;left:50%;top:50%;
-  width:clamp(220px,55vw,380px);
-  height:clamp(60px,18vw,110px);
+.saturno::after{
+  content:"";
+  position:absolute;
+  inset:0;
   border-radius:50%;
-  border:8px solid #ff6a00;
-  transform:translate(-50%,-50%) rotateX(70deg);
-  z-index:55;
+  background:linear-gradient(90deg,rgba(0,0,0,.65),transparent 50%,rgba(255,210,130,.16));
 }
-.anillo.back{z-index:45;opacity:.4}
 
+/* SOLO LA PARTE DELANTERA DEL ANILLO */
+.anillo-frente{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:100%;
+  height:38%;
+  border-radius:50%;
+  transform:translate(-50%,-50%) rotate(-10deg);
+  border:10px solid transparent;
+  border-bottom-color:#ff9b1a;
+  border-left-color:rgba(255,150,20,.75);
+  border-right-color:rgba(255,190,90,.85);
+  filter:drop-shadow(0 0 12px rgba(255,100,0,.9));
+  z-index:4;
+  pointer-events:none;
+}
+
+/* tapa superior del planeta para ocultar el anillo de atrás */
+.tapa-planeta{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:clamp(140px,32vw,240px);
+  height:clamp(70px,16vw,120px);
+  transform:translate(-50%,-100%);
+  border-radius:120px 120px 0 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,190,90,.22) 0px,
+      rgba(255,190,90,.22) 5px,
+      rgba(120,55,15,.25) 8px,
+      rgba(120,55,15,.25) 13px
+    ),
+    radial-gradient(circle at 68% 30%, #ffd27a 0%, #ffb347 18%, #c96b1d 42%, #5a2d0c 68%, #070201 92%);
+  z-index:5;
+  pointer-events:none;
+}
+
+/* FRASES */
 .frase{
   position:absolute;left:50%;top:50%;
   white-space:nowrap;
   font-weight:bold;
   color:white;
   text-shadow:0 0 6px #ff4b00,0 0 15px #ff4b00;
-  will-change:transform;
 }
 
 .control-musica{
@@ -92,19 +166,23 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
 <div class="inicio" id="inicio">
   <div>
     <h1>NUESTRO UNIVERSO</h1>
-    <p>Entre todo este universo, lo más increíble que me pasó fue encontrarte a ti ❤️.</p>
+    <p>Entre todo este universo, lo más increíble que me pasó fue encontrarte a ti❤️.</p>
     <button onclick="entrar()">ENTRAR AL UNIVERSO</button>
   </div>
 </div>
 
 <div class="universo" id="universo">
+
   <audio id="musica" loop>
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <div class="anillo back"></div>
-  <div class="saturno"></div>
-  <div class="anillo"></div>
+  <div class="planeta-wrap">
+    <div class="anillo-atras"></div>
+    <div class="saturno"></div>
+    <div class="anillo-frente"></div>
+    <div class="tapa-planeta"></div>
+  </div>
 
   <button class="control-musica" onclick="toggleMusica()">🎵 Pausar</button>
   <div class="info">✨ Para ti ✨</div>
@@ -113,14 +191,13 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
 <script>
 const frases = [
   "Te amo ❤️","Mi reina 👑","Mi todo 💖","Mi vida ✨",
-  "Mi universo 🌌","Mi razón 🫶","Mi niña 🌟","Por siempre 💫",
+  "Mi universo 🌌","Mi razón 🫶","Mi luz 🌟","Por siempre 💫",
   "Mi felicidad 😊","Mi paz 🦋"
 ];
 
 let objetos=[];
 let angle=0;
 let iniciado=false;
-let musicaSonando=true;
 
 function entrar(){
   document.getElementById("inicio").style.display="none";
