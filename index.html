@@ -38,18 +38,27 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
   opacity:.7;
 }
 
-/* CONTENEDOR DEL PLANETA */
 .planeta-wrap{
   position:absolute;
   left:50%;
   top:50%;
-  width:clamp(280px,70vw,500px);
-  height:clamp(220px,45vw,380px);
+  width:clamp(280px,70vw,540px);
+  height:clamp(220px,45vw,400px);
   transform:translate(-50%,-50%);
   z-index:60;
 }
 
-/* ANILLO COMPLETO ATRÁS */
+.saturno-img{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:clamp(170px,38vw,310px);
+  transform:translate(-50%,-50%);
+  z-index:3;
+  pointer-events:none;
+  filter:drop-shadow(0 0 35px rgba(255,120,0,.8));
+}
+
 .anillo-atras{
   position:absolute;
   left:50%;
@@ -58,46 +67,13 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
   height:38%;
   border-radius:50%;
   transform:translate(-50%,-50%) rotate(-10deg);
-  border:10px solid rgba(255,130,0,.55);
-  box-shadow:0 0 25px rgba(255,90,0,.6);
+  border:10px solid rgba(255,130,0,.45);
+  box-shadow:0 0 25px rgba(255,90,0,.5);
+  filter:blur(2px);
+  opacity:.45;
   z-index:1;
 }
 
-/* PLANETA */
-.saturno{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:clamp(140px,32vw,240px);
-  height:clamp(140px,32vw,240px);
-  border-radius:50%;
-  transform:translate(-50%,-50%);
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,190,90,.22) 0px,
-      rgba(255,190,90,.22) 5px,
-      rgba(120,55,15,.25) 8px,
-      rgba(120,55,15,.25) 13px
-    ),
-    radial-gradient(circle at 68% 30%, #ffd27a 0%, #ffb347 18%, #c96b1d 42%, #5a2d0c 68%, #070201 92%);
-  box-shadow:
-    0 0 65px rgba(255,110,0,.85),
-    inset -35px -30px 55px rgba(0,0,0,.85),
-    inset 20px 15px 35px rgba(255,220,150,.35);
-  z-index:3;
-  overflow:hidden;
-}
-
-.saturno::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  background:linear-gradient(90deg,rgba(0,0,0,.65),transparent 50%,rgba(255,210,130,.16));
-}
-
-/* SOLO LA PARTE DELANTERA DEL ANILLO */
 .anillo-frente{
   position:absolute;
   left:50%;
@@ -115,29 +91,6 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
   pointer-events:none;
 }
 
-/* tapa superior del planeta para ocultar el anillo de atrás */
-.tapa-planeta{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:clamp(140px,32vw,240px);
-  height:clamp(70px,16vw,120px);
-  transform:translate(-50%,-100%);
-  border-radius:120px 120px 0 0;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,190,90,.22) 0px,
-      rgba(255,190,90,.22) 5px,
-      rgba(120,55,15,.25) 8px,
-      rgba(120,55,15,.25) 13px
-    ),
-    radial-gradient(circle at 68% 30%, #ffd27a 0%, #ffb347 18%, #c96b1d 42%, #5a2d0c 68%, #070201 92%);
-  z-index:5;
-  pointer-events:none;
-}
-
-/* FRASES */
 .frase{
   position:absolute;left:50%;top:50%;
   white-space:nowrap;
@@ -179,9 +132,8 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans
 
   <div class="planeta-wrap">
     <div class="anillo-atras"></div>
-    <div class="saturno"></div>
+    <img src="saturno.png" class="saturno-img" alt="Saturno">
     <div class="anillo-frente"></div>
-    <div class="tapa-planeta"></div>
   </div>
 
   <button class="control-musica" onclick="toggleMusica()">🎵 Pausar</button>
