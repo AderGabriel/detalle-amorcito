@@ -8,7 +8,7 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial}
+body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial,sans-serif}
 
 .inicio{
   position:fixed;inset:0;background:#000;z-index:50;
@@ -36,13 +36,11 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial}
     radial-gradient(circle,#2b0400,#000);
 }
 
-/* estrellas */
 .star{
   position:absolute;width:2px;height:2px;background:white;border-radius:50%;
   opacity:.7;
 }
 
-/* planeta */
 .saturno{
   position:absolute;left:50%;top:50%;
   width:clamp(120px,30vw,210px);
@@ -54,7 +52,6 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial}
   z-index:50;
 }
 
-/* anillos */
 .anillo{
   position:absolute;left:50%;top:50%;
   width:clamp(220px,55vw,380px);
@@ -66,7 +63,6 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial}
 }
 .anillo.back{z-index:45;opacity:.4}
 
-/* frases */
 .frase{
   position:absolute;left:50%;top:50%;
   white-space:nowrap;
@@ -74,6 +70,12 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial}
   color:white;
   text-shadow:0 0 6px #ff4b00,0 0 15px #ff4b00;
   will-change:transform;
+}
+
+.control-musica{
+  position:absolute;right:15px;bottom:15px;z-index:100;
+  background:rgba(0,0,0,.45);color:white;border:1px solid #ff6a00;
+  border-radius:20px;padding:10px 16px;cursor:pointer;
 }
 
 .info{
@@ -96,9 +98,15 @@ body{margin:0;overflow:hidden;background:#000;color:white;font-family:Arial}
 </div>
 
 <div class="universo" id="universo">
+  <audio id="musica" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="anillo back"></div>
   <div class="saturno"></div>
   <div class="anillo"></div>
+
+  <button class="control-musica" onclick="toggleMusica()">🎵 Pausar</button>
   <div class="info">✨ Para ti ✨</div>
 </div>
 
@@ -112,16 +120,44 @@ const frases = [
 let objetos=[];
 let angle=0;
 let iniciado=false;
+let musicaSonando=true;
 
 function entrar(){
   document.getElementById("inicio").style.display="none";
   document.getElementById("universo").style.display="block";
+
+  const musica=document.getElementById("musica");
+  musica.volume=0;
+  musica.play().catch(()=>{});
+
+  let vol=0;
+  const fade=setInterval(()=>{
+    if(vol<0.55){
+      vol+=0.02;
+      musica.volume=vol;
+    }else{
+      clearInterval(fade);
+    }
+  },150);
 
   if(!iniciado){
     estrellas();
     crearFrases();
     animar();
     iniciado=true;
+  }
+}
+
+function toggleMusica(){
+  const musica=document.getElementById("musica");
+  const boton=document.querySelector(".control-musica");
+
+  if(musica.paused){
+    musica.play();
+    boton.innerText="🎵 Pausar";
+  }else{
+    musica.pause();
+    boton.innerText="▶️ Reproducir";
   }
 }
 
@@ -136,29 +172,28 @@ function estrellas(){
   }
 }
 
-/* 🔥 DISTRIBUCIÓN MEJORADA */
 function crearFrases(){
   const u=document.getElementById("universo");
-  const esCelular = window.innerWidth < 700;
+  const esCelular=window.innerWidth<700;
 
-  const cantidad = esCelular ? 70 : 140; // MUCHAS más
-  const radioMin = esCelular ? 100 : 200;
-  const radioMax = esCelular ? 600 : 1200;
+  const cantidad=esCelular?70:140;
+  const radioMin=esCelular?100:200;
+  const radioMax=esCelular?600:1200;
 
   for(let i=0;i<cantidad;i++){
     const f=document.createElement("div");
     f.className="frase";
-    f.innerText=frases[i % frases.length];
+    f.innerText=frases[i%frases.length];
 
-    const radio = radioMin + Math.random()*(radioMax-radioMin);
+    const radio=radioMin+Math.random()*(radioMax-radioMin);
 
     objetos.push({
       el:f,
       r:radio,
-      speed:0.0008 + Math.random()*0.002,
+      speed:0.0008+Math.random()*0.002,
       a:Math.random()*Math.PI*2,
-      size:esCelular ? 12+Math.random()*12 : 16+Math.random()*24,
-      altura:-300 + Math.random()*600 // MÁS rango vertical
+      size:esCelular?12+Math.random()*12:16+Math.random()*24,
+      altura:-300+Math.random()*600
     });
 
     u.appendChild(f);
@@ -175,10 +210,10 @@ function animar(){
     const z=Math.sin(o.a+angle)*o.r;
 
     const scale=0.4+(z+600)/1200;
-    const y=o.altura + z*0.25;
+    const y=o.altura+z*0.25;
 
     o.el.style.fontSize=o.size+"px";
-    o.el.style.opacity=0.25 + scale*0.7;
+    o.el.style.opacity=0.25+scale*0.7;
     o.el.style.zIndex=Math.floor(scale*50);
 
     o.el.style.transform=
